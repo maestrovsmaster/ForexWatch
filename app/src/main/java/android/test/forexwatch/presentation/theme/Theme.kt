@@ -1,4 +1,4 @@
-package android.test.forexwatch.ui.theme
+package android.test.forexwatch.presentation.theme
 
 import android.app.Activity
 import android.os.Build
