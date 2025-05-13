@@ -1,4 +1,4 @@
-package android.test.forexwatch.data.repository.mock
+package android.test.forexwatch.fake
 
 import android.content.Context
 import android.test.forexwatch.core.utils.Resource
@@ -24,14 +24,26 @@ class MockFixerRepository @Inject constructor(private val context: Context) : Fi
             val dto = gson.fromJson(json, FixerRatesResponseDto::class.java)
 
             if (!dto.success) {
-                emit(Resource.Error("API error: ${dto.error?.type}", data = null, errorType = ApiErrorType.NetworkError))
+                emit(
+                    Resource.Error(
+                        "API error: ${dto.error?.type}",
+                        data = null,
+                        errorType = ApiErrorType.NetworkError
+                    )
+                )
                 return@flow
             }
 
             val list = dto.rates.map { CurrencyRate(it.key, it.value) }
             emit(Resource.Success(list))
         } catch (e: Exception) {
-            emit(Resource.Error("Error loading mock data: ${e.localizedMessage}", data = null, errorType = ApiErrorType.NetworkError))
+            emit(
+                Resource.Error(
+                    "Error loading mock data: ${e.localizedMessage}",
+                    data = null,
+                    errorType = ApiErrorType.NetworkError
+                )
+            )
         }
     }
 }

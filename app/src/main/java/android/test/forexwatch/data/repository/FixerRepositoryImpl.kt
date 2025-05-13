@@ -30,8 +30,6 @@ class FixerRepositoryImpl @Inject constructor(
         val lastUpdate = dao.getLastUpdatedTimestamp()
         val shouldRefresh = forceRefresh || lastUpdate == null || isStale(lastUpdate, 15)
 
-        Log.d("FixerRepositoryImpl", "getRates: cachedRates = $cachedRates")
-
         if (!cachedRates.isNullOrEmpty()) {
             emit(Resource.Success(data = cachedRates, isStale = shouldRefresh))
         }

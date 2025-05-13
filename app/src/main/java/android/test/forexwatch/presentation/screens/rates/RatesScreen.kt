@@ -1,32 +1,25 @@
 package android.test.forexwatch.presentation.screens.rates
 
-import android.test.forexwatch.core.logging.LogTags
-import android.test.forexwatch.presentation.components.LoadingIndicator
-import android.test.forexwatch.presentation.components.ErrorMessage
-import android.test.forexwatch.presentation.screens.rates.widgets.RateItem
-import android.test.forexwatch.presentation.state.RatesUiState
+import android.test.forexwatch.presentation.screens.rates.components.RatesList
+import android.test.forexwatch.presentation.screens.rates.widgets.CurrencyHeader
+import android.test.forexwatch.presentation.theme.Blue
+import android.test.forexwatch.presentation.theme.White
 import android.test.forexwatch.presentation.viewmodel.RatesViewModel
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -38,25 +31,7 @@ fun RatesScreen(navController: NavController, viewModel: RatesViewModel = hiltVi
 
     val state = viewModel.uiState.collectAsState().value
 
-    val isRefreshing = state is RatesUiState.Loading && state.fromUser
-    val showLoading = state is RatesUiState.Loading && !state.fromUser
 
-    val rates = when (state) {
-        is RatesUiState.Success -> state.rates
-        is RatesUiState.Error -> state.rates ?: emptyList()
-        else -> emptyList()
-    }
-
-
-    val errorMessage = (state as? RatesUiState.Error)?.message
-    val showRetryCenter = rates.isEmpty() && errorMessage != null
-
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isRefreshing,
-        onRefresh = {
-            viewModel.loadRates(forceRefresh = true)
-        }
-    )
 
     LaunchedEffect(Unit) {
         viewModel.loadRates()
@@ -64,67 +39,67 @@ fun RatesScreen(navController: NavController, viewModel: RatesViewModel = hiltVi
 
 
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("Forex Rates") })
-        }
+
     ) { padding ->
         Box(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .pullRefresh(pullRefreshState)
-                .background(Color.Yellow)
+                .background(Blue)
+                .padding(start = 16.dp, end = 16.dp)
         ) {
-            if (showLoading) {
-                LoadingIndicator()
-            }
 
-            LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                if (rates.isEmpty().not()) {
-                    items(rates) { rate ->
-                        RateItem(rate)
-                    }
-                }
-
-                errorMessage?.let { msg ->
-                    item {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        ErrorMessage(msg)
-                    }
-                }
-            }
-
-            if (showRetryCenter) {
-                Column(
+            Column() {
+                Spacer(modifier = Modifier.height(16.dp))
+                CurrencyHeader(
+                    currencyCode = state.baseCurrencyCode,
+                    baseCurrencyAmount = state.baseCurrencyAmount,
+                    onAmountChanged = {
+                        viewModel.updateBaseAmount(it)
+                    })
+                Spacer(modifier = Modifier.height(16.dp))
+                Box(
                     modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                        .background(White)
+                        .padding(
+                            horizontal = 16.dp, vertical = 16.dp
+
+                        )
                 ) {
-                    ErrorMessage(errorMessage)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(onClick = { viewModel.loadRates(forceRefresh = true) }) {
-                        Text("Refresh")
-                    }
+                    RatesList(
+                        state = state, onRefresh = {
+                            viewModel.loadRates(forceRefresh = true)
+                        },
+                        onSearch = {
+                            viewModel.searchRates(it)
+                        },
+                        searchQuery = state.searchQuery ?: "",
+                        onClear = {
+                            viewModel.searchRates("")
+                        }
+                    )
+
                 }
+
             }
 
-            PullRefreshIndicator(
-                refreshing = isRefreshing,
-                state = pullRefreshState,
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
         }
+
     }
 }
 
-
+@Preview
 @Composable
-private fun RatesList(state: RatesUiState.Success) {
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        items(state.rates) { rate ->
-            RateItem(rate = rate)
-        }
-    }
+fun RatesScreenPreview() {
+    RatesScreen(
+        navController = NavController(LocalContext.current),
+        viewModel = RatesViewModel.preview()
+    )
 }
+
+
+
 

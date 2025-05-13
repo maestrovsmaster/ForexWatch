@@ -5,7 +5,7 @@ import android.test.forexwatch.BuildConfig
 import android.test.forexwatch.data.local.dao.CurrencyRateDao
 import android.test.forexwatch.data.remote.api.FixerApiService
 import android.test.forexwatch.data.repository.FixerRepositoryImpl
-import android.test.forexwatch.data.repository.mock.MockFixerRepository
+import android.test.forexwatch.fake.MockFixerRepository
 import android.test.forexwatch.domain.repository.FixerRepository
 import android.util.Log
 import dagger.Binds
