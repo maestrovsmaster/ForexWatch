@@ -5,5 +5,5 @@ import android.test.forexwatch.domain.model.CurrencyRate
 import kotlinx.coroutines.flow.Flow
 
 interface FixerRepository {
-    fun getRates(): Flow<Resource<List<CurrencyRate>>>
+    fun getRates(forceRefresh: Boolean): Flow<Resource<List<CurrencyRate>>>
 }

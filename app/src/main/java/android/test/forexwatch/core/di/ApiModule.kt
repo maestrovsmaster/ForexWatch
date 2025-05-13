@@ -1,6 +1,8 @@
 package android.test.forexwatch.core.di
 
 import android.test.forexwatch.BuildConfig
+import android.test.forexwatch.core.logging.AppLogger
+import android.test.forexwatch.core.logging.Logger
 import android.test.forexwatch.data.remote.api.FixerApiService
 import android.test.forexwatch.data.remote.interceptor.AuthInterceptor
 import dagger.Module
@@ -16,18 +18,20 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+object ApiModule {
 
-    private const val BASE_URL = "https://api.apilayer.com/fixer/"
+    private const val BASE_URL = "https://data.fixer.io/api/"
 
     @Provides
     @Named("apiKey")
     fun provideApiKey(): String = BuildConfig.API_KEY
 
+
+
     @Provides
     @Singleton
-    fun provideAuthInterceptor(@Named("apiKey") apiKey: String): Interceptor {
-        return AuthInterceptor(apiKey)
+    fun provideAuthInterceptor(@Named("apiKey") apiKey: String, logger: Logger): Interceptor {
+        return AuthInterceptor(apiKey, logger)
     }
 
     @Provides

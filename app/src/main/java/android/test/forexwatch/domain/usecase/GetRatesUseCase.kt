@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetRatesUseCase @Inject constructor(
     private val repository: FixerRepository
 ) {
-    operator fun invoke(): Flow<Resource<List<CurrencyRate>>> {
-        return repository.getRates()
+    operator fun invoke(forceRefresh: Boolean = false): Flow<Resource<List<CurrencyRate>>> {
+        return repository.getRates(forceRefresh)
     }
 }

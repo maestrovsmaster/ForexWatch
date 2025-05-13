@@ -9,6 +9,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import dagger.hilt.android.qualifiers.ApplicationContext
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -16,12 +18,14 @@ object LocalDatabaseModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(context: Context): AppDatabase =
-        Room.databaseBuilder(
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
             "forex_database"
         ).build()
+    }
+
 
     @Provides
     @Singleton

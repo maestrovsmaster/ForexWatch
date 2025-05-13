@@ -9,9 +9,8 @@ import android.test.forexwatch.data.remote.api.FixerApiService
 import android.test.forexwatch.domain.model.CurrencyRate
 import android.test.forexwatch.domain.repository.FixerRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class FixerRepositoryImpl @Inject constructor(
@@ -20,14 +19,16 @@ class FixerRepositoryImpl @Inject constructor(
 ) : FixerRepository {
 
 
-    override fun getRates(): Flow<Resource<List<CurrencyRate>>> = flow {
-        emit(Resource.Loading())
+    override fun getRates(forceRefresh: Boolean): Flow<Resource<List<CurrencyRate>>> = flow {
+        emit(Resource.Loading)
 
-        val cachedRates = dao.getAllRates().map { list -> list.map { it.toDomain() } }
-        emitAll(cachedRates.map { Resource.Success(it) })
-
+        val cachedRates = dao.getAllRates().firstOrNull()?.map { it.toDomain() }
         val lastUpdate = dao.getLastUpdatedTimestamp()
-        val shouldRefresh = lastUpdate == null || isStale(lastUpdate, 15)
+        val shouldRefresh = forceRefresh || lastUpdate == null || isStale(lastUpdate, 15)
+
+        if (!cachedRates.isNullOrEmpty()) {
+            emit(Resource.Success(data = cachedRates, isStale = shouldRefresh))
+        }
 
         if (shouldRefresh) {
             try {
@@ -39,12 +40,20 @@ class FixerRepositoryImpl @Inject constructor(
                 val now = System.currentTimeMillis()
                 dao.clearAndInsertAll(rates.map { it.toEntity(now) })
 
-                emit(Resource.Success(rates))
+                emit(Resource.Success(data = rates, isStale = false))
             } catch (e: Exception) {
-                emit(Resource.Error(e.localizedMessage ?: "Unexpected error"))
+                emit(
+                    Resource.Error(
+                        message = e.localizedMessage ?: "Unexpected error",
+                        data = cachedRates,
+                        isNetworkError = true
+                    )
+                )
             }
         }
     }
+
+
 
 
 }

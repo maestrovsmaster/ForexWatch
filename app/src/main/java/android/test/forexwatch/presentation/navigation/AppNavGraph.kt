@@ -1,6 +1,8 @@
 package android.test.forexwatch.presentation.navigation
 
+import android.test.forexwatch.presentation.screens.rates.RatesScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 
 import androidx.navigation.NavHostController
@@ -10,16 +12,17 @@ import androidx.navigation.compose.rememberNavController
 
 
 @Composable
-fun AppNavGraph(navController: NavHostController = rememberNavController()) {
+fun AppNavGraph(
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
+) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Rates.route
+        startDestination = Screen.Rates.route,
+        modifier = modifier
     ) {
         composable(Screen.Rates.route) {
-            //TODO RatesScreen
-        }
-        composable(Screen.Detail.route) {
-            //TODO DetailScreen
+            RatesScreen(navController = navController)
         }
     }
 }

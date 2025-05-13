@@ -96,6 +96,8 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler.ksp)
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+
 
 
 }
