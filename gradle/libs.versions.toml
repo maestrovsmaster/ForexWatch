@@ -16,6 +16,10 @@ coroutines = "1.10.1"
 room = "2.7.1"
 navigationRuntimeAndroid = "2.9.0"
 hiltNavigationCompose = "1.2.0"
+compose-material = "1.8.1"
+landscapist = "2.2.0"
+uiTooling = "1.8.1"
+
 
 
 [libraries]
@@ -47,7 +51,9 @@ room-compiler-ksp = { group = "androidx.room", name = "room-compiler", version.r
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version = "navigation" }
 androidx-navigation-runtime-android = { group = "androidx.navigation", name = "navigation-runtime-android", version.ref = "navigationRuntimeAndroid" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-
+compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose-material" }
+landscapist-glide = { module = "com.github.skydoves:landscapist-glide", version.ref = "landscapist" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 
 
 

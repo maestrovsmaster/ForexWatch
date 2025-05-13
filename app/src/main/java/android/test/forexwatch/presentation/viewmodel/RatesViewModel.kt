@@ -5,6 +5,7 @@ import android.test.forexwatch.core.logging.LogTags
 import android.test.forexwatch.core.logging.Logger
 import android.test.forexwatch.core.connectivity.ConnectivityObserver
 import android.test.forexwatch.core.utils.Resource
+import android.test.forexwatch.data.remote.enums.ApiErrorType
 import android.test.forexwatch.domain.usecase.GetRatesUseCase
 import android.test.forexwatch.presentation.state.RatesUiState
 import androidx.lifecycle.ViewModel
@@ -21,14 +22,14 @@ class RatesViewModel @Inject constructor(
     private val logger: Logger
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<RatesUiState>(RatesUiState.Loading)
+    private val _uiState = MutableStateFlow<RatesUiState>(RatesUiState.Loading(fromUser = false))
     val uiState = _uiState.asStateFlow()
 
     private var isConnected = true
 
     init {
         observeConnectivity()
-        loadRates()
+        //loadRates()
     }
 
     private fun observeConnectivity() {
@@ -41,13 +42,12 @@ class RatesViewModel @Inject constructor(
     }
 
     fun loadRates(forceRefresh: Boolean = false) {
-        logger.d(LogTags.FETCH_DATA, "Fetching rates, forceRefresh = $forceRefresh")
+
         viewModelScope.launch {
             getRatesUseCase(forceRefresh).collect { result ->
-                logger.d(LogTags.FETCH_DATA, "Result = $result")
 
                 _uiState.value = when (result) {
-                    is Resource.Loading -> RatesUiState.Loading
+                    is Resource.Loading -> RatesUiState.Loading(fromUser = forceRefresh)
 
                     is Resource.Success -> RatesUiState.Success(
                         rates = result.data,
@@ -56,9 +56,11 @@ class RatesViewModel @Inject constructor(
                     )
 
                     is Resource.Error -> RatesUiState.Error(
+                        rates = result.data,
                         message = result.message,
                         isConnected = isConnected,
-                        showRefresh = true
+                        showRefresh = true,
+                        showLimitReached = result.errorType == ApiErrorType.UsageLimitReached
                     )
                 }
             }
