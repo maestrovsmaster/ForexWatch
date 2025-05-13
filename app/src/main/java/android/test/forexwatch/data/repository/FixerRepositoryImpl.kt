@@ -6,14 +6,18 @@ import android.test.forexwatch.data.local.dao.CurrencyRateDao
 import android.test.forexwatch.data.local.mapper.toDomain
 import android.test.forexwatch.data.local.mapper.toEntity
 import android.test.forexwatch.data.remote.api.FixerApiService
+import android.test.forexwatch.data.remote.dto.TimeSeriesResponseDto
 import android.test.forexwatch.data.remote.enums.ApiErrorType
+import android.test.forexwatch.data.remote.mapper.toDomain
 import android.test.forexwatch.domain.model.CurrencyRate
+import android.test.forexwatch.domain.model.CurrencyTimeseries
 import android.test.forexwatch.domain.repository.FixerRepository
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
+import java.time.LocalDate
 import javax.inject.Inject
 
 class FixerRepositoryImpl @Inject constructor(
@@ -76,6 +80,27 @@ class FixerRepositoryImpl @Inject constructor(
             }
         }
 
+    }
+
+
+    override fun getTimeSeriesRates(
+        targetCurrency: String,
+        startDate: LocalDate,
+        endDate: LocalDate
+    ): Flow<Resource<CurrencyTimeseries>> = flow {
+        emit(Resource.Loading)
+
+        try {
+            val response: TimeSeriesResponseDto = api.getTimeSeriesRates(
+                startDate = startDate.toString(),
+                endDate = endDate.toString(),
+                symbols = targetCurrency
+            )
+            val currencyTimeseries: CurrencyTimeseries = response.toDomain(targetCurrency)
+            emit(Resource.Success(currencyTimeseries))
+        } catch (e: Exception) {
+            emit(Resource.Error(e.message ?: "Unknown error", errorType = ApiErrorType.NetworkError))
+        }
     }
 
 

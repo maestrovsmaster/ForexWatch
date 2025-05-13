@@ -3,6 +3,7 @@ package android.test.forexwatch.presentation.screens.rates.widgets
 import android.test.forexwatch.core.utils.getCurrencyName
 import android.test.forexwatch.domain.model.CurrencyRate
 import android.test.forexwatch.presentation.components.FlagCircle
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.Card
@@ -21,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun RateItem(modifier: Modifier = Modifier, rate: CurrencyRate, multiplier: Double = 1.0) {
+fun RateItem(modifier: Modifier = Modifier, rate: CurrencyRate, multiplier: Double = 1.0, onItemClick: (String) -> Unit = {}) {
     val currencyName = getCurrencyName(rate.currencyCode)
     val currencyCode = rate.currencyCode
     val rateValue = rate.rate * multiplier
@@ -29,7 +30,8 @@ fun RateItem(modifier: Modifier = Modifier, rate: CurrencyRate, multiplier: Doub
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(64.dp),
+            .height(64.dp)
+            .clickable { onItemClick(currencyCode) },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {

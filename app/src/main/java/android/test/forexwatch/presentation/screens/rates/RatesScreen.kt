@@ -1,5 +1,6 @@
 package android.test.forexwatch.presentation.screens.rates
 
+import android.test.forexwatch.presentation.navigation.Screen
 import android.test.forexwatch.presentation.screens.rates.components.RatesList
 import android.test.forexwatch.presentation.screens.rates.widgets.CurrencyHeader
 import android.test.forexwatch.presentation.theme.Blue
@@ -79,6 +80,9 @@ fun RatesScreen(navController: NavController, viewModel: RatesViewModel = hiltVi
                         searchQuery = state.searchQuery ?: "",
                         onClear = {
                             viewModel.searchRates("")
+                        },
+                        onItemClick = { code ->
+                            navController.navigate(Screen.Detail.createRoute(code))
                         }
                     )
 

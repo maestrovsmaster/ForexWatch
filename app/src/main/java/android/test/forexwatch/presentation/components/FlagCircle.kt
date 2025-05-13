@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun FlagCircle(currencyCode: String, modifier: Modifier = Modifier.size(32.dp), ) {
-    val countryCode = CurrencyCountryMapper.currencyToCountry[currencyCode.uppercase()] ?: "us"
+    val countryCode = CurrencyCountryMapper.currencyToCountry[currencyCode.uppercase()] ?: ""
     val flagUrl = "https://flagcdn.com/w80/${countryCode.lowercase()}.png"
 
     GlideImage(

@@ -45,6 +45,7 @@ fun RatesList(
     searchQuery: String,
     onSearch: (String) -> Unit,
     onClear: () -> Unit,
+    onItemClick: (String) -> Unit
 ) {
     val isRefreshing = state is LoadingUiState && state.fromUser
     val showLoading = state is LoadingUiState && !state.fromUser
@@ -107,7 +108,8 @@ fun RatesList(
                             RateItem(
                                 modifier = Modifier.padding(horizontal = 8.dp),
                                 item,
-                                multiplier = state.baseCurrencyAmount
+                                multiplier = state.baseCurrencyAmount,
+                                onItemClick = onItemClick
                             )
 
                             if (index < filteredAndSorted.lastIndex) {

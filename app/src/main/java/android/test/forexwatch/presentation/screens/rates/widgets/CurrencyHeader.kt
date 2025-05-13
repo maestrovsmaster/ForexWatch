@@ -30,22 +30,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CurrencyHeader(modifier: Modifier = Modifier, currencyCode: String,
-                   baseCurrencyAmount: Double = 1.0,
-                   onAmountChanged: (Double) -> Unit,) {
+fun CurrencyHeader(
+    modifier: Modifier = Modifier, currencyCode: String,
+    baseCurrencyAmount: Double = 1.0,
+    onAmountChanged: (Double) -> Unit,
+) {
 
     val currencyName = getCurrencyName(currencyCode)
     val currencyCode = currencyCode
+
 
     Row(
         modifier = modifier
             .fillMaxWidth()
             .height(120.dp)
-        .padding(0.dp),
+            .padding(0.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
     ) {
-        FlagCircle(currencyCode, modifier = Modifier.size(56.dp).border(width = 2.dp, color = BlueLight, shape = CircleShape))
+        FlagCircle(currencyCode,
+            modifier = Modifier
+                .size(56.dp)
+                .border(width = 2.dp, color = BlueLight, shape = CircleShape)
+        )
         Text(
             text = buildAnnotatedString {
                 append("$currencyName ")
@@ -67,7 +74,9 @@ fun CurrencyHeader(modifier: Modifier = Modifier, currencyCode: String,
             textColour = White,
             onAmountChanged = onAmountChanged,
             modifier = Modifier
-                .padding(0.dp).width(100.dp).height(60.dp)
+                .padding(0.dp)
+                .width(100.dp)
+                .height(60.dp)
 
         )
 

@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId = "android.test.forexwatch"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -116,6 +116,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.compose.material)
     implementation(libs.landscapist.glide)
-
+    implementation(libs.mpandroidchart)
+    implementation(libs.accompanist.systemuicontroller)
 
 }
