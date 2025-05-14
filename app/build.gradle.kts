@@ -95,6 +95,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.android)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -118,5 +121,6 @@ dependencies {
     implementation(libs.landscapist.glide)
     implementation(libs.mpandroidchart)
     implementation(libs.accompanist.systemuicontroller)
+    testImplementation(libs.room.testing)
 
 }

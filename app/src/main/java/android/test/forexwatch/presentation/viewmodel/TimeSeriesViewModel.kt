@@ -3,8 +3,6 @@ package android.test.forexwatch.presentation.viewmodel
 import android.test.forexwatch.core.logging.Logger
 import android.test.forexwatch.core.utils.Resource
 import android.test.forexwatch.domain.usecase.time_series_use_case.GetTimeSeriesUseCase
-import android.test.forexwatch.fake.FakeGetTimeSeriesUseCase
-import android.test.forexwatch.fake.FakeLogger
 import android.test.forexwatch.presentation.state.TimeSeriesErrorState
 import android.test.forexwatch.presentation.state.TimeSeriesLoadingState
 import android.test.forexwatch.presentation.state.TimeSeriesSuccessState
@@ -103,11 +101,4 @@ class TimeSeriesViewModel @Inject constructor(
         )
     }
 
-
-    companion object {
-        fun preview() = TimeSeriesViewModel(
-            getTimeSeriesUseCase = FakeGetTimeSeriesUseCase(),
-            logger = FakeLogger()
-        )
-    }
 }

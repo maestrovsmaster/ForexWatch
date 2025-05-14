@@ -6,9 +6,11 @@ import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 interface GetTimeSeriesUseCase {
+
     operator fun invoke(
         targetCurrency: String,
         startDate: LocalDate,
         endDate: LocalDate
     ): Flow<Resource<CurrencyTimeseries>>
+
 }

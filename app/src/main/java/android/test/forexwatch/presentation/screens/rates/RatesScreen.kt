@@ -1,5 +1,9 @@
 package android.test.forexwatch.presentation.screens.rates
 
+import android.annotation.SuppressLint
+import android.test.forexwatch.fake.FakeConnectivityObserver
+import android.test.forexwatch.fake.FakeGetRatesUseCase
+import android.test.forexwatch.fake.FakeLogger
 import android.test.forexwatch.presentation.navigation.Screen
 import android.test.forexwatch.presentation.screens.rates.components.RatesList
 import android.test.forexwatch.presentation.screens.rates.widgets.CurrencyHeader
@@ -95,12 +99,18 @@ fun RatesScreen(navController: NavController, viewModel: RatesViewModel = hiltVi
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview
 @Composable
 fun RatesScreenPreview() {
+    val viewModel = RatesViewModel(
+        getRatesUseCase = FakeGetRatesUseCase(),
+        connectivityObserver = FakeConnectivityObserver(),
+        logger = FakeLogger()
+    )
     RatesScreen(
         navController = NavController(LocalContext.current),
-        viewModel = RatesViewModel.preview()
+        viewModel = viewModel
     )
 }
 

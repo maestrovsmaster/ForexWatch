@@ -6,8 +6,7 @@ import android.test.forexwatch.core.logging.Logger
 import android.test.forexwatch.core.connectivity.ConnectivityObserver
 import android.test.forexwatch.core.utils.Resource
 import android.test.forexwatch.data.remote.enums.ApiErrorType
-import android.test.forexwatch.domain.usecase.get_rates_use_case.GetRatesUseCase
-import android.test.forexwatch.domain.usecase.get_rates_use_case.GetRatesUseCaseImpl
+import android.test.forexwatch.domain.usecase.rates_use_case.GetRatesUseCase
 import android.test.forexwatch.fake.FakeConnectivityObserver
 import android.test.forexwatch.fake.FakeGetRatesUseCase
 import android.test.forexwatch.fake.FakeLogger
@@ -15,7 +14,7 @@ import android.test.forexwatch.presentation.state.ErrorUiState
 import android.test.forexwatch.presentation.state.LoadingUiState
 import android.test.forexwatch.presentation.state.RatesUiState
 import android.test.forexwatch.presentation.state.SuccessUiState
-import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +26,7 @@ import javax.inject.Inject
 class RatesViewModel @Inject constructor(
     private val getRatesUseCase: GetRatesUseCase,
     private val connectivityObserver: ConnectivityObserver,
-    private val logger: Logger
+    private val logger: Logger,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<RatesUiState>(LoadingUiState(fromUser = false))
@@ -96,11 +95,10 @@ class RatesViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        fun preview() = RatesViewModel(
-            getRatesUseCase = FakeGetRatesUseCase(),
-            connectivityObserver = FakeConnectivityObserver(),
-            logger = FakeLogger()
-        )
+
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun setTestState(state: RatesUiState) {
+        _uiState.value = state
     }
 }

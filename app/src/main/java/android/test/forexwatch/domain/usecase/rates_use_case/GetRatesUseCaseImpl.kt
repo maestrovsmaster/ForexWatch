@@ -1,4 +1,4 @@
-package android.test.forexwatch.domain.usecase.get_rates_use_case
+package android.test.forexwatch.domain.usecase.rates_use_case
 
 import android.test.forexwatch.core.utils.Resource
 import android.test.forexwatch.domain.model.CurrencyRate
@@ -9,7 +9,9 @@ import javax.inject.Inject
 class GetRatesUseCaseImpl @Inject constructor(
     private val repository: FixerRepository
 ) : GetRatesUseCase {
+
     override fun invoke(forceRefresh: Boolean): Flow<Resource<List<CurrencyRate>>> {
         return repository.getRates(forceRefresh)
     }
+
 }
