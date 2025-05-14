@@ -28,6 +28,7 @@ Alternatively, use the `mock` build variant to run the app with mock data from l
 
 ```bash
 ./gradlew assembleDebug
+```
 
 ![image](https://github.com/user-attachments/assets/50c95491-8f61-4e04-92e2-9ec7948eb823)
 ![image](https://github.com/user-attachments/assets/6e02f8f4-5f04-4f44-85fc-f2c21ff16331)
