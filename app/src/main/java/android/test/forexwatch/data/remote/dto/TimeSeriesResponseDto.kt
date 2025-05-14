@@ -8,5 +8,6 @@ data class TimeSeriesResponseDto(
     @SerializedName("start_date") val startDate: String,
     @SerializedName("end_date") val endDate: String,
     val base: String,
-    val rates: Map<String, Map<String, Double>>
+    val rates: Map<String, Map<String, Double>>,
+    @SerializedName("error") val error: FixerErrorDto? = null
 )

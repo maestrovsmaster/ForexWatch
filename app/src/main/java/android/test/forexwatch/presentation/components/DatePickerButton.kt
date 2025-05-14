@@ -8,6 +8,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
 fun DatePickerButton(
@@ -29,7 +31,8 @@ fun DatePickerButton(
     }
 
     Button(onClick = { datePicker.show() }) {
-        Text("$label: ${date.toString()}")
+        val formatted = date.format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.UK))
+        Text("$label: ${formatted.toString()}")
     }
 }
 

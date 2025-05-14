@@ -4,6 +4,7 @@ import android.test.forexwatch.core.utils.Resource
 import android.test.forexwatch.domain.model.CurrencyTimeseries
 import android.test.forexwatch.domain.model.DailyRate
 import android.test.forexwatch.domain.usecase.time_series_use_case.GetTimeSeriesUseCase
+import android.util.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -30,7 +31,6 @@ class FakeGetTimeSeriesUseCase : GetTimeSeriesUseCase {
             target = targetCurrency,
             rates = rates
         )
-
         delay(300) //Simulate delay
         emit(Resource.Success(timeseries))
     }

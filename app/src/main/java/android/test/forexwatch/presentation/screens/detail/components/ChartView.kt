@@ -12,14 +12,11 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import android.test.forexwatch.domain.model.DailyRate
-
+import android.util.Log
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 @Composable
-fun CurrencyChart(rates: List<DailyRate>) {
-    val entries: List<Entry> = remember(rates) {
-        rates.mapIndexed { index, item ->
-            Entry(index.toFloat(), item.rate.toFloat())
-        }
-    }
+fun CurrencyChart(entries: List<Entry>, labels: List<String>) {
 
     AndroidView(
         modifier = Modifier
@@ -34,13 +31,36 @@ fun CurrencyChart(rates: List<DailyRate>) {
                 }
 
                 data = LineData(dataSet)
+
                 description.isEnabled = false
-                xAxis.isEnabled = false
                 axisRight.isEnabled = false
                 legend.isEnabled = false
                 setTouchEnabled(true)
                 animateX(300)
+
+                xAxis.apply {
+                    valueFormatter = IndexAxisValueFormatter(labels)
+                    setLabelCount(5, true)
+                    granularity = 1f
+                    isGranularityEnabled = true
+                    position = XAxis.XAxisPosition.BOTTOM
+                    textSize = 10f
+                    setDrawGridLines(false)
+                    isEnabled = true
+                }
             }
+        },
+        update = { chart ->
+            val dataSet = LineDataSet(entries, "Rate").apply {
+                setDrawValues(false)
+                setDrawCircles(false)
+                lineWidth = 2f
+            }
+
+            chart.data = LineData(dataSet)
+            chart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+            chart.notifyDataSetChanged()
+            chart.invalidate()
         }
     )
 }

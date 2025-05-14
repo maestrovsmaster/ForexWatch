@@ -89,13 +89,20 @@ class TimeSeriesViewModel @Inject constructor(
     }
 
     fun updateDateRange(start: LocalDate, end: LocalDate) {
+        val (safeStart, safeEnd) = if (start.isAfter(end)) {
+            start to start
+        } else {
+            start to end
+        }
+
         loadSeries(
             targetCurrency = _uiState.value.targetCurrency,
-            startDate = start,
-            endDate = end,
+            startDate = safeStart,
+            endDate = safeEnd,
             fromUser = true
         )
     }
+
 
     companion object {
         fun preview() = TimeSeriesViewModel(

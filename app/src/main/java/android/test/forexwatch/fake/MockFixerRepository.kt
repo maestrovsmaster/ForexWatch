@@ -9,6 +9,7 @@ import android.test.forexwatch.data.remote.mapper.toDomain
 import android.test.forexwatch.domain.model.CurrencyRate
 import android.test.forexwatch.domain.model.CurrencyTimeseries
 import android.test.forexwatch.domain.repository.FixerRepository
+import android.util.Log
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -57,20 +58,19 @@ class MockFixerRepository @Inject constructor(private val context: Context) : Fi
         endDate: LocalDate
     ): Flow<Resource<CurrencyTimeseries>> = flow {
         emit(Resource.Loading)
+        val currency = "UAH"
 
         try {
             val json = context.assets.open("timeseries_rates.json")
                 .bufferedReader().use { it.readText() }
-
             val gson = Gson()
             val dto = gson.fromJson(json, TimeSeriesResponseDto::class.java)
-
             if (!dto.success) {
                 emit(Resource.Error("Mock API error", data = null, errorType = ApiErrorType.NetworkError))
                 return@flow
             }
-
-            emit(Resource.Success(dto.toDomain(targetCurrency)))
+            val result = dto.toDomain(currency)
+            emit(Resource.Success(result))
         } catch (e: Exception) {
             emit(Resource.Error("Mock load error: ${e.message}", data = null, errorType = ApiErrorType.NetworkError))
         }

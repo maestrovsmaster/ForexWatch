@@ -96,6 +96,20 @@ class FixerRepositoryImpl @Inject constructor(
                 endDate = endDate.toString(),
                 symbols = targetCurrency
             )
+            if (response.success.not() ) {
+                val errorType = ApiErrorType.fromString(response.error?.type)
+                val errorMessage = response.error?.type ?: "Unexpected error"
+
+                emit(
+                    Resource.Error(
+                        message = errorMessage,
+                        data = null,
+                        errorType = errorType
+                    )
+                )
+                return@flow
+            }
+
             val currencyTimeseries: CurrencyTimeseries = response.toDomain(targetCurrency)
             emit(Resource.Success(currencyTimeseries))
         } catch (e: Exception) {
