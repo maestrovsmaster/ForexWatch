@@ -1,7 +1,6 @@
 package android.test.forexwatch.core.di
 
 import android.test.forexwatch.BuildConfig
-import android.test.forexwatch.core.logging.AppLogger
 import android.test.forexwatch.core.logging.Logger
 import android.test.forexwatch.data.remote.api.FixerApiService
 import android.test.forexwatch.data.remote.interceptor.AuthInterceptor
@@ -25,7 +24,6 @@ object ApiModule {
     @Provides
     @Named("apiKey")
     fun provideApiKey(): String = BuildConfig.API_KEY
-
 
 
     @Provides

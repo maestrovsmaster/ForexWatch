@@ -6,7 +6,8 @@ import android.test.forexwatch.core.logging.Logger
  * Created by maestromaster$ on 13/05/2025$.
  */
 
-class FakeLogger :Logger{
+class FakeLogger : Logger {
+
     override fun d(tag: String, message: String) {
         TODO("Not yet implemented")
     }

@@ -25,6 +25,7 @@ class FixerRepositoryImpl @Inject constructor(
 
 
     override fun getRates(forceRefresh: Boolean): Flow<Resource<List<CurrencyRate>>> = flow {
+
         emit(Resource.Loading)
 
         val cachedRates = getCachedRates()

@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class FakeGetRatesUseCase : GetRatesUseCase {
+
     override fun invoke(forceRefresh: Boolean): Flow<Resource<List<CurrencyRate>>> {
+
         return flowOf(
             Resource.Success(
                 listOf(

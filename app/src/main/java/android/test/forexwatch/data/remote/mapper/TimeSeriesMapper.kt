@@ -7,6 +7,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
 fun TimeSeriesResponseDto.toDomain(targetCurrency: String): CurrencyTimeseries {
+
     val parsedRates = rates.mapNotNull { (dateString, rateMap) ->
         val rate = rateMap[targetCurrency] ?: return@mapNotNull null
 

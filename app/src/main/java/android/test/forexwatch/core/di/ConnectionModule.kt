@@ -1,8 +1,8 @@
 package android.test.forexwatch.core.di
 
 import android.content.Context
-import android.test.forexwatch.core.connectivity.ConnectivityObserverImpl
 import android.test.forexwatch.core.connectivity.ConnectivityObserver
+import android.test.forexwatch.core.connectivity.ConnectivityObserverImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

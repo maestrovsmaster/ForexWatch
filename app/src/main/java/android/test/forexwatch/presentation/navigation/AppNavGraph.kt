@@ -19,6 +19,7 @@ fun AppNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
+
     NavHost(
         navController = navController,
         startDestination = Screen.Rates.route,

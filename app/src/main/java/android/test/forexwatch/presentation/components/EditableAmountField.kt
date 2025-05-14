@@ -47,6 +47,7 @@ fun EditableAmountField(
     onAmountChanged: (Double) -> Unit,
     currencyFormatter: (Double) -> String = { "%.2f".format(it) }
 ) {
+    
     var isEditing by remember { mutableStateOf(false) }
 
     var input by remember {

@@ -13,6 +13,7 @@ class AuthInterceptor @Inject constructor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
+
         val originalRequest = chain.request()
 
         val url = originalRequest.url.newBuilder()

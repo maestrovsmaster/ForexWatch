@@ -40,6 +40,7 @@ open class TimeSeriesViewModel @Inject constructor(
         endDate: LocalDate = _uiState.value.endDate,
         fromUser: Boolean = false
     ) {
+
         _uiState.value = TimeSeriesLoadingState(
             targetCurrency = targetCurrency,
             startDate = startDate,

@@ -3,6 +3,7 @@ package android.test.forexwatch.presentation.state
 import android.test.forexwatch.domain.model.CurrencyRate
 
 sealed class RatesUiState {
+
     abstract val rates: List<CurrencyRate>?
     abstract val baseCurrencyCode: String
     abstract val baseCurrencyAmount: Double
@@ -10,6 +11,7 @@ sealed class RatesUiState {
 }
 
 data class LoadingUiState(val fromUser: Boolean = false) : RatesUiState() {
+
     override val rates: List<CurrencyRate>? = null
     override val baseCurrencyCode: String = ""
     override val baseCurrencyAmount: Double = 0.0

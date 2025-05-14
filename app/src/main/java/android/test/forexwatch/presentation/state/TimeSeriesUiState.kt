@@ -4,6 +4,7 @@ import android.test.forexwatch.domain.model.CurrencyTimeseries
 import java.time.LocalDate
 
 sealed class TimeSeriesUiState {
+
     abstract val targetCurrency: String
     abstract val startDate: LocalDate
     abstract val endDate: LocalDate

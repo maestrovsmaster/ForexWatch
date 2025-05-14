@@ -26,8 +26,10 @@ interface CurrencyRateDao {
 
     @Transaction
     suspend fun clearAndInsertAll(rates: List<CurrencyRateEntity>) {
+
         clearAll()
         insertAll(rates)
+
     }
 
     @Query("DELETE FROM currency_rates")
