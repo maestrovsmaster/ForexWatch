@@ -7,8 +7,11 @@ The data is fetched from the [Fixer.io](https://fixer.io) API.
 
 To run the app with live data, create the following files:
 
+```bash
 secrets.dev.properties
+
 secrets.prod.properties
+```
 
 Each file must contain:
 
