@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
 interface FixerRepository {
+
     fun getRates(forceRefresh: Boolean): Flow<Resource<List<CurrencyRate>>>
 
     fun getTimeSeriesRates(
@@ -14,4 +15,5 @@ interface FixerRepository {
         startDate: LocalDate,
         endDate: LocalDate
     ): Flow<Resource<CurrencyTimeseries>>
+
 }

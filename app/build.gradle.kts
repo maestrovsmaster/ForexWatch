@@ -79,7 +79,18 @@ android {
         enableAggregatingTask = false
     }
 
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md"
+            )
+        }
+    }
 
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 
 }
 
@@ -95,6 +106,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.android)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -103,6 +117,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.dagger.hilt.android)
     debugImplementation(libs.ui.tooling)
+    androidTestImplementation(libs.hilt.android.testing)
     ksp(libs.dagger.hilt.compiler.ksp)
     implementation(libs.retrofit)
     implementation(libs.gson.converter)
@@ -118,5 +133,6 @@ dependencies {
     implementation(libs.landscapist.glide)
     implementation(libs.mpandroidchart)
     implementation(libs.accompanist.systemuicontroller)
+    testImplementation(libs.room.testing)
 
 }

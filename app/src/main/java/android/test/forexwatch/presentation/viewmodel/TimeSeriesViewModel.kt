@@ -3,8 +3,6 @@ package android.test.forexwatch.presentation.viewmodel
 import android.test.forexwatch.core.logging.Logger
 import android.test.forexwatch.core.utils.Resource
 import android.test.forexwatch.domain.usecase.time_series_use_case.GetTimeSeriesUseCase
-import android.test.forexwatch.fake.FakeGetTimeSeriesUseCase
-import android.test.forexwatch.fake.FakeLogger
 import android.test.forexwatch.presentation.state.TimeSeriesErrorState
 import android.test.forexwatch.presentation.state.TimeSeriesLoadingState
 import android.test.forexwatch.presentation.state.TimeSeriesSuccessState
@@ -19,7 +17,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class TimeSeriesViewModel @Inject constructor(
+open class TimeSeriesViewModel @Inject constructor(
     private val getTimeSeriesUseCase: GetTimeSeriesUseCase,
     private val logger: Logger
 ) : ViewModel() {
@@ -31,7 +29,7 @@ class TimeSeriesViewModel @Inject constructor(
             endDate = LocalDate.now()
         )
     )
-    val uiState = _uiState.asStateFlow()
+    open val uiState = _uiState.asStateFlow()
 
     init {
         loadSeries()
@@ -79,7 +77,7 @@ class TimeSeriesViewModel @Inject constructor(
         }
     }
 
-    fun updateCurrency(newCurrency: String) {
+    open fun updateCurrency(newCurrency: String) {
         loadSeries(
             targetCurrency = newCurrency,
             startDate = _uiState.value.startDate,
@@ -88,7 +86,7 @@ class TimeSeriesViewModel @Inject constructor(
         )
     }
 
-    fun updateDateRange(start: LocalDate, end: LocalDate) {
+    open fun updateDateRange(start: LocalDate, end: LocalDate) {
         val (safeStart, safeEnd) = if (start.isAfter(end)) {
             start to start
         } else {
@@ -103,11 +101,4 @@ class TimeSeriesViewModel @Inject constructor(
         )
     }
 
-
-    companion object {
-        fun preview() = TimeSeriesViewModel(
-            getTimeSeriesUseCase = FakeGetTimeSeriesUseCase(),
-            logger = FakeLogger()
-        )
-    }
 }

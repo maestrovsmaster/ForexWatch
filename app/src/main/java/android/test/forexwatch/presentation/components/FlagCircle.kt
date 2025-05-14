@@ -28,7 +28,6 @@ fun FlagCircle(currencyCode: String, modifier: Modifier = Modifier.size(32.dp), 
         imageModel = { flagUrl },
         modifier = modifier.clip(CircleShape),
         loading = {
-            // Optional: loading shimmer or placeholder
         },
         failure = {
             Box(

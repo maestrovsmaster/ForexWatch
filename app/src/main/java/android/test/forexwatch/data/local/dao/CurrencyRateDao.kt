@@ -1,10 +1,10 @@
 package android.test.forexwatch.data.local.dao
 
+import android.test.forexwatch.data.local.entity.CurrencyRateEntity
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import android.test.forexwatch.data.local.entity.CurrencyRateEntity
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
@@ -20,8 +20,6 @@ interface CurrencyRateDao {
     @Query("DELETE FROM currency_rates")
     suspend fun clear()
 
-
-
     @Query("SELECT updatedAt FROM currency_rates ORDER BY updatedAt DESC LIMIT 1")
     suspend fun getLastUpdatedTimestamp(): Long?
 
@@ -34,6 +32,10 @@ interface CurrencyRateDao {
 
     @Query("DELETE FROM currency_rates")
     suspend fun clearAll()
+
+
+    @Query("SELECT * FROM currency_rates")
+    suspend fun getCachedOnce(): List<CurrencyRateEntity>
 
 
 }

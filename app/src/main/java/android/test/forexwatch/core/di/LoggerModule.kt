@@ -1,6 +1,8 @@
 package android.test.forexwatch.core.di
 
 import android.test.forexwatch.core.logging.AppLogger
+import android.test.forexwatch.core.logging.BuildConfigProvider
+import android.test.forexwatch.core.logging.DefaultBuildConfigProvider
 import android.test.forexwatch.core.logging.Logger
 import dagger.Module
 import dagger.Provides
@@ -14,5 +16,11 @@ object LoggerModule {
 
     @Provides
     @Singleton
-    fun provideLogger(): Logger = AppLogger()
+    fun provideBuildConfigProvider(): BuildConfigProvider = DefaultBuildConfigProvider()
+
+    @Provides
+    @Singleton
+    fun provideLogger(
+        buildConfigProvider: BuildConfigProvider
+    ): Logger = AppLogger(buildConfigProvider)
 }

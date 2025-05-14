@@ -14,7 +14,7 @@ fun TimeSeriesResponseDto.toDomain(targetCurrency: String): CurrencyTimeseries {
             val date = LocalDate.parse(dateString)
             DailyRate(date = date, rate = rate)
         } catch (e: DateTimeParseException) {
-            null // Skip dates that can't be parsed
+            null
         }
     }.sortedBy { it.date }
 

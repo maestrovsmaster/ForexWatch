@@ -40,6 +40,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 
 dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 dagger-hilt-compiler-ksp = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 gson-converter = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
@@ -56,7 +57,10 @@ landscapist-glide = { module = "com.github.skydoves:landscapist-glide", version.
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "chart" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "systemuicontroller" }
-
+coroutines-test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1"
+room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
+mockk = { module = "io.mockk:mockk", version = "1.13.5" }
+mockk-android = { module = "io.mockk:mockk-android", version = "1.13.5" }
 
 
 
