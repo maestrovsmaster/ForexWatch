@@ -5,8 +5,17 @@ import android.test.forexwatch.core.logging.LogTags
 import android.test.forexwatch.core.logging.Logger
 import android.test.forexwatch.core.connectivity.ConnectivityObserver
 import android.test.forexwatch.core.utils.Resource
-import android.test.forexwatch.domain.usecase.GetRatesUseCase
+import android.test.forexwatch.data.remote.enums.ApiErrorType
+import android.test.forexwatch.domain.usecase.get_rates_use_case.GetRatesUseCase
+import android.test.forexwatch.domain.usecase.get_rates_use_case.GetRatesUseCaseImpl
+import android.test.forexwatch.fake.FakeConnectivityObserver
+import android.test.forexwatch.fake.FakeGetRatesUseCase
+import android.test.forexwatch.fake.FakeLogger
+import android.test.forexwatch.presentation.state.ErrorUiState
+import android.test.forexwatch.presentation.state.LoadingUiState
 import android.test.forexwatch.presentation.state.RatesUiState
+import android.test.forexwatch.presentation.state.SuccessUiState
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,14 +30,13 @@ class RatesViewModel @Inject constructor(
     private val logger: Logger
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<RatesUiState>(RatesUiState.Loading)
+    private val _uiState = MutableStateFlow<RatesUiState>(LoadingUiState(fromUser = false))
     val uiState = _uiState.asStateFlow()
 
     private var isConnected = true
 
     init {
         observeConnectivity()
-        loadRates()
     }
 
     private fun observeConnectivity() {
@@ -41,27 +49,58 @@ class RatesViewModel @Inject constructor(
     }
 
     fun loadRates(forceRefresh: Boolean = false) {
-        logger.d(LogTags.FETCH_DATA, "Fetching rates, forceRefresh = $forceRefresh")
+
         viewModelScope.launch {
             getRatesUseCase(forceRefresh).collect { result ->
-                logger.d(LogTags.FETCH_DATA, "Result = $result")
 
                 _uiState.value = when (result) {
-                    is Resource.Loading -> RatesUiState.Loading
+                    is Resource.Loading -> LoadingUiState(fromUser = forceRefresh)
 
-                    is Resource.Success -> RatesUiState.Success(
+                    is Resource.Success -> SuccessUiState(
                         rates = result.data,
                         isStale = result.isStale,
-                        isConnected = isConnected
+                        isConnected = isConnected,
+                        baseCurrencyCode = "EUR",
+                        baseCurrencyAmount = 1.0
                     )
 
-                    is Resource.Error -> RatesUiState.Error(
+                    is Resource.Error -> ErrorUiState(
+                        rates = result.data,
                         message = result.message,
                         isConnected = isConnected,
-                        showRefresh = true
+                        showRefresh = true,
+                        showLimitReached = result.errorType == ApiErrorType.UsageLimitReached,
+                        baseCurrencyCode = "EUR",
+                        baseCurrencyAmount = 1.0
                     )
                 }
             }
         }
+    }
+
+    fun updateBaseAmount(amount: Double) {
+        val currentUiState = _uiState.value
+        _uiState.value = when (currentUiState) {
+            is SuccessUiState -> currentUiState.copy(baseCurrencyAmount = amount)
+            is ErrorUiState -> currentUiState.copy(baseCurrencyAmount = amount)
+            is LoadingUiState -> currentUiState.copy()
+        }
+    }
+
+    fun searchRates(query: String) {
+        val currentUiState = _uiState.value
+        _uiState.value = when (currentUiState) {
+            is SuccessUiState -> currentUiState.copy(searchQuery = query)
+            is ErrorUiState -> currentUiState.copy(searchQuery = query)
+            is LoadingUiState -> currentUiState.copy()
+        }
+    }
+
+    companion object {
+        fun preview() = RatesViewModel(
+            getRatesUseCase = FakeGetRatesUseCase(),
+            connectivityObserver = FakeConnectivityObserver(),
+            logger = FakeLogger()
+        )
     }
 }

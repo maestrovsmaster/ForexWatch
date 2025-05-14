@@ -16,12 +16,19 @@ val secretsProd = Properties().apply {
 }
 
 android {
+
+    sourceSets {
+        getByName("main") {
+            assets.srcDirs("src/main/assets")
+        }
+    }
+
     namespace = "android.test.forexwatch"
     compileSdk = 35
 
     defaultConfig {
         applicationId = "android.test.forexwatch"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -30,6 +37,7 @@ android {
     }
 
     buildTypes {
+
         debug {
             buildConfigField("String", "API_KEY", "\"${secretsDev["API_KEY"]}\"")
         }
@@ -42,6 +50,12 @@ android {
             )
 
             buildConfigField("String", "API_KEY", "\"${secretsProd["API_KEY"]}\"")
+        }
+
+        create("mock") {
+            initWith(getByName("debug"))
+            buildConfigField("String", "API_KEY", "\"mock-key-not-used\"")
+            matchingFallbacks += listOf("debug")
         }
     }
 
@@ -65,6 +79,8 @@ android {
         enableAggregatingTask = false
     }
 
+
+
 }
 
 dependencies {
@@ -86,6 +102,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.dagger.hilt.android)
+    debugImplementation(libs.ui.tooling)
     ksp(libs.dagger.hilt.compiler.ksp)
     implementation(libs.retrofit)
     implementation(libs.gson.converter)
@@ -97,7 +114,9 @@ dependencies {
     ksp(libs.room.compiler.ksp)
     implementation(libs.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-
-
+    implementation(libs.compose.material)
+    implementation(libs.landscapist.glide)
+    implementation(libs.mpandroidchart)
+    implementation(libs.accompanist.systemuicontroller)
 
 }

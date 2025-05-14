@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 import android.net.NetworkCapabilities
 
-class AndroidConnectivityObserver @Inject constructor(
+class ConnectivityObserverImpl @Inject constructor(
     private val context: Context
 ) : ConnectivityObserver {
 

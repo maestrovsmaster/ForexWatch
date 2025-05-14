@@ -30,7 +30,7 @@ class AuthInterceptor @Inject constructor(
         if (BuildConfig.DEBUG) {
             logger.d(LogTags.AUTH_INTERCEPTOR, "Response status: ${response.code}")
 
-            // For debugging purposes only, uncomment carefully:
+            //For debugging purposes only, uncomment carefully:
             val responseBody = response.peekBody(1024 * 10).string()
             logger.d(LogTags.AUTH_INTERCEPTOR, "Response body: $responseBody")
         }

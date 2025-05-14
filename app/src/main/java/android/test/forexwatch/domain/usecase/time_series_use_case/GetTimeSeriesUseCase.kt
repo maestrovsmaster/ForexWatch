@@ -1,15 +1,12 @@
-package android.test.forexwatch.domain.repository
+package android.test.forexwatch.domain.usecase.time_series_use_case
 
 import android.test.forexwatch.core.utils.Resource
-import android.test.forexwatch.domain.model.CurrencyRate
 import android.test.forexwatch.domain.model.CurrencyTimeseries
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 
-interface FixerRepository {
-    fun getRates(forceRefresh: Boolean): Flow<Resource<List<CurrencyRate>>>
-
-    fun getTimeSeriesRates(
+interface GetTimeSeriesUseCase {
+    operator fun invoke(
         targetCurrency: String,
         startDate: LocalDate,
         endDate: LocalDate

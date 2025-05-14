@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun ErrorMessage(message: String) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier,//.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         Text(text = message, color = Color.Red)
