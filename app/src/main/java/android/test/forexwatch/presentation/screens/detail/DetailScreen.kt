@@ -81,6 +81,7 @@ fun DetailScreen(
                     }
 
                     is TimeSeriesSuccessState -> {
+
                         val allRates = (state as TimeSeriesSuccessState).series.rates
                         val (entries, labels) = prepareChartData(
                             allRates,

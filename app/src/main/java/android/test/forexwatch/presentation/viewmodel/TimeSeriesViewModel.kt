@@ -7,6 +7,7 @@ import android.test.forexwatch.presentation.state.TimeSeriesErrorState
 import android.test.forexwatch.presentation.state.TimeSeriesLoadingState
 import android.test.forexwatch.presentation.state.TimeSeriesSuccessState
 import android.test.forexwatch.presentation.state.TimeSeriesUiState
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,9 +32,7 @@ open class TimeSeriesViewModel @Inject constructor(
     )
     open val uiState = _uiState.asStateFlow()
 
-    init {
-        loadSeries()
-    }
+
 
     fun loadSeries(
         targetCurrency: String = _uiState.value.targetCurrency,

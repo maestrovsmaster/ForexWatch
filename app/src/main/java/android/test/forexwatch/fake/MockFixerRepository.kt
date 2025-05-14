@@ -69,12 +69,11 @@ class MockFixerRepository @Inject constructor(private val context: Context) : Fi
 
         val gson = Gson()
         val dto = gson.fromJson(json, TimeSeriesResponseDto::class.java)
-
         if (!dto.success) {
             throw IllegalStateException("Mock API error")
         }
 
-        val result = dto.toDomain(targetCurrency)
+        val result = dto.toDomain("UAH")
         emit(Resource.Success(result))
     }.catch { e ->
         emit(Resource.Error("Mock load error: ${e.message}", data = null, errorType = ApiErrorType.NetworkError))
