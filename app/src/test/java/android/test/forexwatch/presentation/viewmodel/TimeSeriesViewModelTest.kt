@@ -133,7 +133,7 @@ class TimeSeriesViewModelTest {
         assertTrue(state is TimeSeriesSuccessState)
         state as TimeSeriesSuccessState
         assertEquals(start, state.startDate)
-        assertEquals(start, state.endDate) // Бо замінено на start
+        assertEquals(start, state.endDate)
     }
 
     @Test

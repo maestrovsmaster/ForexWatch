@@ -65,7 +65,6 @@ fun RatesList(
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isRefreshing,
         onRefresh = {
-            //  viewModel.loadRates(forceRefresh = true)
             onRefresh()
         }
     )
@@ -155,7 +154,6 @@ fun RatesList(
                 ErrorMessage(errorMessage)
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = {
-                    //viewModel.loadRates(forceRefresh = true)
                     onRefresh()
                 }) {
                     Text("Refresh")

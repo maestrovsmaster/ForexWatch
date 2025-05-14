@@ -202,7 +202,7 @@ class FixerRepositoryImplTest {
 
     @Test
     fun returnsApiError_whenApiRespondsWithSuccessFalse() = runTest {
-        // given
+
         val cachedRates = emptyList<CurrencyRateEntity>()
         coEvery { dao.getCachedOnce() } returns cachedRates
         coEvery { dao.getLastUpdatedTimestamp() } returns null
@@ -215,10 +215,10 @@ class FixerRepositoryImplTest {
             error = FixerErrorDto(code = 106, type = "invalid_access_key")
         )
 
-        // when
+
         val result = repo.getRates(forceRefresh = true).last()
 
-        // then
+
         assertTrue(result is Resource.Error)
         assertEquals("invalid_access_key", (result as Resource.Error).message)
         assertEquals(ApiErrorType.UnexpectedError, result.errorType)

@@ -76,7 +76,6 @@ class AuthInterceptorTest {
         every { chain.request() } returns originalRequest
         every { chain.proceed(any()) } returns response
 
-        // Set BuildConfig.DEBUG to true using reflection or custom BuildConfigStub
         interceptor.intercept(chain)
 
         verify { logger.d(any(), match { it.contains("Request URL") }) }

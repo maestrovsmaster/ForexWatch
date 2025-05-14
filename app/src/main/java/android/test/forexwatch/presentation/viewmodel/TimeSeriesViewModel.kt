@@ -17,7 +17,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class TimeSeriesViewModel @Inject constructor(
+open class TimeSeriesViewModel @Inject constructor(
     private val getTimeSeriesUseCase: GetTimeSeriesUseCase,
     private val logger: Logger
 ) : ViewModel() {
@@ -29,7 +29,7 @@ class TimeSeriesViewModel @Inject constructor(
             endDate = LocalDate.now()
         )
     )
-    val uiState = _uiState.asStateFlow()
+    open val uiState = _uiState.asStateFlow()
 
     init {
         loadSeries()
@@ -77,7 +77,7 @@ class TimeSeriesViewModel @Inject constructor(
         }
     }
 
-    fun updateCurrency(newCurrency: String) {
+    open fun updateCurrency(newCurrency: String) {
         loadSeries(
             targetCurrency = newCurrency,
             startDate = _uiState.value.startDate,
@@ -86,7 +86,7 @@ class TimeSeriesViewModel @Inject constructor(
         )
     }
 
-    fun updateDateRange(start: LocalDate, end: LocalDate) {
+    open fun updateDateRange(start: LocalDate, end: LocalDate) {
         val (safeStart, safeEnd) = if (start.isAfter(end)) {
             start to start
         } else {

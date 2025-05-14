@@ -79,7 +79,18 @@ android {
         enableAggregatingTask = false
     }
 
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md"
+            )
+        }
+    }
 
+    defaultConfig {
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
 
 }
 
@@ -106,6 +117,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.dagger.hilt.android)
     debugImplementation(libs.ui.tooling)
+    androidTestImplementation(libs.hilt.android.testing)
     ksp(libs.dagger.hilt.compiler.ksp)
     implementation(libs.retrofit)
     implementation(libs.gson.converter)
